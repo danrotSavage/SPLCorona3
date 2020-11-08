@@ -46,9 +46,10 @@ Session:: Session(const std::string &path):g(),infected(new queue<int>) {
     //get agent from json
     for(auto elem: j["agents"])
     {
-
+            if (elem[0]=="V")
             agents.push_back(new Virus(elem[1]));
-
+            else
+                agents.push_back(new ContactTracer());
     }
 
 }
@@ -82,7 +83,7 @@ void Session::addAgent(const Agent &agent) {
 
 void Session::simulate() {
     int indexTurn=0;
-    for (int i = 0; i < 15; ++i) {
+    for (int i = 0; i < 5; ++i) {
         std::vector<Agent*> agentsTemp;
         agentsTemp=agents;
         for(auto elem:agentsTemp)
@@ -96,11 +97,13 @@ void Session::simulate() {
 
 
 
-
+        indexTurn++;
     }
+        json j;
+        j["graph"]=this->getGraph().getEdges();
+         std::cout <<j << std::endl;
+        ofstream i("output.json");
 
-
-    indexTurn++;
     }
 
 int Session::getGraphSize() const {

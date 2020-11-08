@@ -39,6 +39,7 @@ class MaxRankTree: public Tree{
 public:
     MaxRankTree(int rootLabel);
     virtual int traceTree();
+    MaxRankTree *Recursion(MaxRankTree *maxSoFar);
 };
 
 class RootTree: public Tree{

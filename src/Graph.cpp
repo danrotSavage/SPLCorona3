@@ -36,9 +36,20 @@ void Graph::infectNode(int nodeInd) {
 
 }
 
-bool Graph::isInfected(int nodeInd) {
+int Graph::isInfected(int nodeInd) {
 
-    return (*trafficLight)[nodeInd]==1|| (*trafficLight)[nodeInd]==2;
+    return (*trafficLight)[nodeInd];
+}
+
+void Graph::removeNeighbors(int remove) {
+    for (int i = 0; i < edges.size(); ++i) {
+        edges[remove][i]=0;
+        edges[i][remove]=0;
+    }
+}
+
+std::vector<std::vector<int>> Graph::getEdges() {
+    return std::vector<std::vector<int>>();
 }
 
 

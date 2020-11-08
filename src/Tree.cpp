@@ -166,26 +166,40 @@ Tree *Tree::createRootTree(const Session &session, int rootLabel) {
     }
     return AbrahamTheRoot;
 }
+MaxRankTree * MaxRankTree::Recursion( MaxRankTree *maxSoFar){
 
+    if(this->childrenSize()==0)
+        return maxSoFar;
+
+    if(this->childrenSize()>maxSoFar->childrenSize())
+        maxSoFar= this;
+
+    for (int i = 0; i < children->size(); ++i) {
+        MaxRankTree *temp = (MaxRankTree*)(*children)[i];
+        MaxRankTree *childMax=temp->Recursion(maxSoFar);
+        if( (*childMax).childrenSize()>(maxSoFar->childrenSize()) ) //if the Child tree have biger rank tree replace maxSoFar
+        {
+            *maxSoFar=*childMax;
+        }
+    }
+
+    return maxSoFar;
+
+
+}
+
+int CycleTree::traceTree() {
+    CycleTree *output=this;
+    for (int i = 1; i < currCycle; ++i) {
+        CycleTree *temp=(CycleTree*)((*children)[0]);
+        output=temp;
+    }
+    return output->node;
+
+}
 
 int MaxRankTree::traceTree() {
-    int remove;
-    int maxRankNodeTemp= -1;
-    int childrenSize=0;
-
-
-        for (auto elem: *children) {
-            childrenSize++;
-        }
-        if (childrenSize>maxRankNodeTemp){
-
-
-            maxRankNodeTemp=childrenSize;
-            remove=node;
-        }
+    return Recursion(new MaxRankTree(-1)) -> node;
 }
-int CycleTree::traceTree() {
 
 
-
-}
