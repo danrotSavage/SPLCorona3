@@ -28,43 +28,20 @@ std::vector<int> Tree::getReleventChildren( std::vector<int> &GraphNeighbor, vec
     return *output;
 }
 
+
+
+
 Tree * Tree::createTree(const Session &session, int rootLabel) {
-
-    vector<int> usedVertices(session.getGraphSize());
-    for (int i = 0; i < session.getGraphSize(); ++i) {
-        usedVertices[i]=0;
-    }
-
-    queue<Tree*> *treeQueue = new queue<Tree*>();
-    //push root into queue
-    Tree *AbrahamTheRoot = new Tree(rootLabel);
-    treeQueue->push(AbrahamTheRoot);
-     Graph g= session.getGraphConst();
-
-    ///////DESTROYYYYYY, get graph from session
-    usedVertices[rootLabel]=1;
-    while (!treeQueue->empty()) {
-
-        Tree *tempRoot = treeQueue->front();
-        treeQueue->pop();
-
-       vector<int> child1= g.getNeighbor(tempRoot->node);
-        //get the neighbors from a graph function. insert into a tree function in which it builds correct children.
-
-        vector<int> childrenInt = tempRoot->getReleventChildren(child1,usedVertices);
-        for (int child: childrenInt) {
-
-            Tree *tempTree = new Tree(child);
-            treeQueue->push(tempTree);
-            tempRoot->addChild(tempTree);
-            //childrenInt.push_back(tempTree->node);
+        TreeType b = session.getTreeType();
+        switch(b){
+            case MaxRank:
+                return createMaxRankTree(session, rootLabel);
+            case Cycle:
+                return createCycleTree(session,rootLabel,session.getCurrCycle());
+            case Root:
+                return createRootTree(session,rootLabel);
         }
-
-    }
-    return AbrahamTheRoot;
-
 }
-
 //check later
 void Tree::addChild( Tree *child) {
 
@@ -88,23 +65,109 @@ int Tree::childrenSize() {
     return children->size();
 }
 
-/*MaxRankTree * MaxRankTree::Recursion( MaxRankTree *maxSoFar){
-
-    if(this->childrenSize()==0)
-        return this;
-
-    for (int i = 0; i < children->size(); ++i) {
-        ((*children)[i])->Recursion();
+Tree *Tree::createMaxRankTree(const Session &session, int rootLabel) {
+    vector<int> usedVertices(session.getGraphSize());
+    for (int i = 0; i < session.getGraphSize(); ++i) {
+        usedVertices[i]=0;
     }
-    if(this->childrenSize()>maxSoFar->childrenSize())
-        maxSoFar= curr;
+
+    auto *treeQueue = new queue<MaxRankTree*>();
+    //push root into queue
+    auto *AbrahamTheRoot = new MaxRankTree(rootLabel);
+    treeQueue->push(AbrahamTheRoot);
+    Graph g= session.getGraphConst();
+
+    ///////DESTROYYYYYY, get graph from session
+    usedVertices[rootLabel]=1;
+    while (!treeQueue->empty()) {
+
+        MaxRankTree *tempRoot = treeQueue->front();
+        treeQueue->pop();
+
+        vector<int> child1= g.getNeighbor(tempRoot->node);
+        //get the neighbors from a graph function. insert into a tree function in which it builds correct children.
+
+        vector<int> childrenInt = tempRoot->getReleventChildren(child1,usedVertices);
+        for (int child: childrenInt) {
+
+            MaxRankTree *tempTree = new MaxRankTree(child);
+            treeQueue->push(tempTree);
+            tempRoot->addChild(tempTree);
+            //childrenInt.push_back(tempTree->node);
+        }
+
+    }
+    return AbrahamTheRoot;
+}
+Tree *Tree::createCycleTree(const Session &session, int rootLabel , int currCycle) {
+    vector<int> usedVertices(session.getGraphSize());
+    for (int i = 0; i < session.getGraphSize(); ++i) {
+        usedVertices[i]=0;
+    }
+
+    auto *treeQueue = new queue<CycleTree*>();
+    //push root into queue
+    auto *AbrahamTheRoot = new CycleTree(rootLabel,currCycle);
+    treeQueue->push(AbrahamTheRoot);
+    Graph g= session.getGraphConst();
 
 
+    usedVertices[rootLabel]=1;
+    while (!treeQueue->empty()) {
+
+        CycleTree *tempRoot = treeQueue->front();
+        treeQueue->pop();
+
+        vector<int> child1= g.getNeighbor(tempRoot->node);
+        //get the neighbors from a graph function. insert into a tree function in which it builds correct children.
+
+        vector<int> childrenInt = tempRoot->getReleventChildren(child1,usedVertices);
+        for (int child: childrenInt) {
+
+            CycleTree *tempTree = new CycleTree(child,currCycle);
+            treeQueue->push(tempTree);
+            tempRoot->addChild(tempTree);
+            //childrenInt.push_back(tempTree->node);
+        }
+
+    }
+    return AbrahamTheRoot;
+}
+Tree *Tree::createRootTree(const Session &session, int rootLabel) {
+    vector<int> usedVertices(session.getGraphSize());
+    for (int i = 0; i < session.getGraphSize(); ++i) {
+        usedVertices[i]=0;
+    }
+
+    auto *treeQueue = new queue<RootTree*>();
+    //push root into queue
+    auto *AbrahamTheRoot = new RootTree(rootLabel);
+    treeQueue->push(AbrahamTheRoot);
+    Graph g= session.getGraphConst();
+
+    usedVertices[rootLabel]=1;
+    while (!treeQueue->empty()) {
+
+        RootTree *tempRoot = treeQueue->front();
+        treeQueue->pop();
+
+        vector<int> child1= g.getNeighbor(tempRoot->node);
+        //get the neighbors from a graph function. insert into a tree function in which it builds its correct children.
+
+        vector<int> childrenInt = tempRoot->getReleventChildren(child1,usedVertices);
+        for (int child: childrenInt) {
+
+            RootTree *tempTree = new RootTree(child);
+            treeQueue->push(tempTree);
+            tempRoot->addChild(tempTree);
+            //childrenInt.push_back(tempTree->node);
+        }
+
+    }
+    return AbrahamTheRoot;
+}
 
 
-
-
-}*/
 int MaxRankTree::traceTree() {
     int remove;
     int maxRankNodeTemp= -1;

@@ -110,3 +110,7 @@ int Session::getGraphSize() const {
 Graph Session::getGraphConst() const {
     return g;
 }
+
+int Session::getCurrCycle() const {
+    return this->currCycle;
+}

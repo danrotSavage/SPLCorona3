@@ -13,8 +13,12 @@ public:
     void addChild(const Tree &child);
     static Tree* createTree(const Session& session, int rootLabel);
     int childrenSize();
+    virtual int traceTree()=0;
+private:
+    static Tree *  createMaxRankTree(const Session& session, int rootLabel);
+    static Tree *  createCycleTree( const Session& session, int rootLabel, int currCycle);
+    static Tree *  createRootTree( const Session& session, int rootLabel);
 
-    //virtual int traceTree()=0;
 
 protected:
     int node;
@@ -34,7 +38,6 @@ private:
 class MaxRankTree: public Tree{
 public:
     MaxRankTree(int rootLabel);
-    MaxRankTree * Recursion(MaxRankTree * maxRank);
     virtual int traceTree();
 };
 
