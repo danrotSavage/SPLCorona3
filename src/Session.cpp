@@ -104,10 +104,25 @@ void Session::simulate() {
 
         indexTurn++;
     }
-        json j;
-        j["graph"]=this->getGraph().getEdges();
-         std::cout <<j << std::endl;
-        ofstream i("output.json");
+         json j;
+    vector <int> infec;
+    for (Agent *a:agents) {
+        if (a->MyType()=="V")
+            infec.push_back(a->MyNumber());
+    }
+    j["agents"]=infec;
+    
+    
+    std::vector<std::vector<int>> edges;
+    for (int i = 0; i < this->g.getSize(); ++i) {
+        vector<int> neighbors = g.getNeighbor(i);
+        edges.push_back(neighbors);
+    }
+    j["graph"]=edges;
+    
+    
+    ofstream i("../json/output.json");
+    j>>i;
 
     }
 
