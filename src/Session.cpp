@@ -58,6 +58,7 @@ Session:: Session(const std::string &path):g(),infected(new queue<int>) {
 void Session::enqueueInfected(int node) {
 
     infected->push(node);
+    std::cout<<node <<" entered queue"<< std::endl;
 }
 int Session::dequeueInfected() {
     int temp= infected->front();
@@ -84,6 +85,10 @@ void Session::addAgent(const Agent &agent) {
 void Session::simulate() {
     int indexTurn=0;
     for (int i = 0; i < 5; ++i) {
+        std::cout<<"             turn "<<i<<" started"<<std::endl;
+        if(i==2){
+            int a=1;
+        }
         std::vector<Agent*> agentsTemp;
         agentsTemp=agents;
         for(auto elem:agentsTemp)
@@ -99,10 +104,25 @@ void Session::simulate() {
 
         indexTurn++;
     }
-        json j;
-        j["graph"]=this->getGraph().getEdges();
-         std::cout <<j << std::endl;
-        ofstream i("output.json");
+         json j;
+    vector <int> infec;
+    for (Agent *a:agents) {
+        if (a->MyType()=="V")
+            infec.push_back(a->MyNumber());
+    }
+    j["agents"]=infec;
+    
+    
+    std::vector<std::vector<int>> edges;
+    for (int i = 0; i < this->g.getSize(); ++i) {
+        vector<int> neighbors = g.getNeighbor(i);
+        edges.push_back(neighbors);
+    }
+    j["graph"]=edges;
+    
+    
+    ofstream i("../json/output.json");
+    j>>i;
 
     }
 
@@ -117,3 +137,7 @@ Graph Session::getGraphConst() const {
 int Session::getCurrCycle() const {
     return this->currCycle;
 }
+
+bool Session::isQueueEmpty() {
+     return (*infected).empty();
+ }

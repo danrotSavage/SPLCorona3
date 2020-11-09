@@ -36,6 +36,7 @@ public:
     int dequeueInfected();
     TreeType getTreeType() const;
     int getCurrCycle() const;
+    bool isQueueEmpty();
 
 private:
     Graph g;
