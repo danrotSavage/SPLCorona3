@@ -58,6 +58,7 @@ Session:: Session(const std::string &path):g(),infected(new queue<int>) {
 void Session::enqueueInfected(int node) {
 
     infected->push(node);
+    std::cout<<node <<" entered queue"<< std::endl;
 }
 int Session::dequeueInfected() {
     int temp= infected->front();
@@ -84,6 +85,10 @@ void Session::addAgent(const Agent &agent) {
 void Session::simulate() {
     int indexTurn=0;
     for (int i = 0; i < 5; ++i) {
+        std::cout<<"             turn "<<i<<" started"<<std::endl;
+        if(i==2){
+            int a=1;
+        }
         std::vector<Agent*> agentsTemp;
         agentsTemp=agents;
         for(auto elem:agentsTemp)
@@ -117,3 +122,7 @@ Graph Session::getGraphConst() const {
 int Session::getCurrCycle() const {
     return this->currCycle;
 }
+
+bool Session::isQueueEmpty() {
+     return (*infected).empty();
+ }

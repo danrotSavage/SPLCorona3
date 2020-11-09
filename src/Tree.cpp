@@ -77,7 +77,7 @@ Tree *Tree::createMaxRankTree(const Session &session, int rootLabel) {
     treeQueue->push(AbrahamTheRoot);
     Graph g= session.getGraphConst();
 
-    ///////DESTROYYYYYY, get graph from session
+
     usedVertices[rootLabel]=1;
     while (!treeQueue->empty()) {
 
