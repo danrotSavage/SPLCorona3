@@ -104,7 +104,7 @@ void Session::simulate() {
 
         indexTurn++;
     }
-         json j;
+  /*       json j;
     vector <int> infec;
     for (Agent *a:agents) {
         if (a->MyType()=="V")
@@ -123,6 +123,21 @@ void Session::simulate() {
     
     ofstream i("../json/output.json");
     j>>i;
+*/
+    json j,array;
+    j=this->getGraph().getNeighbor(0);
+    array["graph"].push_back(j);
+    j=this->getGraph().getNeighbor(1);
+    array["graph"].push_back(j);
+    j=this->getGraph().getNeighbor(2);
+    array["graph"].push_back(j);
+
+    ofstream i("output.json");
+    array>>i;
+
+
+
+
 
     }
 
