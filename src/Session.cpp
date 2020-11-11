@@ -104,7 +104,7 @@ void Session::simulate() {
 
         indexTurn++;
     }
-         json j;
+   /*      json j;
     vector <int> infec;
     for (Agent *a:agents) {
         if (a->MyType()=="V")
@@ -123,7 +123,7 @@ void Session::simulate() {
     
     ofstream i("../json/output.json");
     j>>i;
-
+*/
     }
 
 int Session::getGraphSize() const {

@@ -48,29 +48,29 @@ void Virus::act(Session &session) {
     Graph g = session.getGraph();
 
 
-    if(g.isInfected(nodeInd)==0)//only for the first setup when we read from json
+    if(session.getGraph().isInfected(nodeInd)==0)//only for the first setup when we read from json
     {
-        g.infectNode(nodeInd);
+        session.getGraph().infectNode(nodeInd);
 
     }
 
-    if(g.isInfected(nodeInd)==1)//each virus must be infected, make sure 1 in traffic light become 2
+    if(session.getGraph().isInfected(nodeInd)==1)//each virus must be infected, make sure 1 in traffic light become 2
     {
-        g.infectNode(nodeInd);
+        session.getGraph().infectNode(nodeInd);
         std::cout<<nodeInd<<" got sick" <<std::endl;
         session.enqueueInfected(nodeInd);
 
     }
 
-    vector <int> neighbors = g.getNeighbor(nodeInd);
+    vector <int> neighbors = session.getGraph().getNeighbor(nodeInd);
     int index=0;
 
     for(auto elem:neighbors) {
 
-        if (elem == 1 & g.isInfected(index)==0 )
+        if (elem == 1 & session.getGraph().isInfected(index)==0 )
         {
             std::cout << nodeInd << " has infected "<< index<< std::endl;
-            g.infectNode(index);
+            session.getGraph().infectNode(index);
             Virus *copy = new Virus(index);
             session.addAgent(copy);
 

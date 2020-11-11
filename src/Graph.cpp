@@ -4,13 +4,11 @@
 
 using namespace std;
 #include "../header/Graph.h"
-Graph::Graph(std::vector<std::vector<int>> matrix):edges( matrix){//matrix on the heap or stack
+Graph::Graph(std::vector<std::vector<int>> matrix):edges(matrix){//matrix on the heap or stack
 
     trafficLight = new vector<int>;
     for (int i = 0; i < matrix.size(); ++i) {
         trafficLight->push_back(0);
-
-
     }
 }
 
@@ -51,5 +49,58 @@ void Graph::removeNeighbors(int remove) {
 std::vector<std::vector<int>> Graph::getEdges() {
     return std::vector<std::vector<int>>();
 }
+
+
+//copy constructor
+
+/*
+    for (int i = 0; i < other.edges.size(); ++i) {
+        vector<int> m;
+        for (int j = 0; j < other.edges[i].size(); ++j) {
+
+            m.push_back(other.edges[i][j]);
+
+        }
+        edges.push_back(m);
+    }
+
+    */
+
+
+Graph::~Graph() {
+    if(trafficLight)
+        delete trafficLight;
+
+}
+
+const Graph &Graph::operator=(const Graph &other) {
+    *trafficLight = (*(other.trafficLight));
+    edges=other.edges;
+    return *this;
+}
+
+const Graph &Graph::operator=(Graph &&other) {
+     trafficLight=other.trafficLight;
+    other.trafficLight=nullptr;
+    edges=other.edges;
+    return *this;
+
+}
+
+Graph::Graph(Graph &&other) {
+    trafficLight=other.trafficLight;
+    other.trafficLight= nullptr;
+    edges=other.edges;
+
+}
+//copy constructor
+Graph::Graph (const Graph &other):edges(other.edges) {
+
+    trafficLight = new vector<int>;
+    for (int i = 0; i < other.trafficLight->size(); ++i) {
+        trafficLight->push_back((*(other.trafficLight))[i]);
+    }
+}
+
 
 
