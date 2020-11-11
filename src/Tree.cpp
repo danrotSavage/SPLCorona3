@@ -61,7 +61,7 @@ RootTree::RootTree(int rootLabel):Tree(rootLabel) {}
 int RootTree::traceTree() {
     return this->node;
 }
-int Tree::childrenSize() {
+int Tree::childrenSize() const{
     return children->size();
 }
 
@@ -166,6 +166,74 @@ Tree *Tree::createRootTree(const Session &session, int rootLabel) {
     }
     return AbrahamTheRoot;
 }
+
+Tree::~Tree() {
+    for (int i = 0; i < childrenSize(); ++i) {
+        if((*children)[i]){
+            delete (*children)[i];
+        }
+    }
+    if(children){
+        delete children;
+    }
+}
+
+vector<Tree*> *Tree::getChildren() const {
+    return this->children;
+
+
+
+}
+
+int Tree::getNode() const {
+    return node;
+}
+
+Tree::Tree(const Tree &other) {
+    node=other.getNode();
+    children=CopyConstractorCopyTree(other);
+}
+
+
+
+vector<Tree*> * Tree::CopyConstractorCopyTree(const Tree &other ) {
+    Tree *Root=new MaxRankTree(other.getNode());
+    if(other.childrenSize()!=0){
+
+
+        for (int i = 0; i < other.childrenSize(); ++i) {
+            Tree *thisChild = (Tree *) ( (*other.getChildren())[i]);
+            Tree *otherChild=new MaxRankTree(thisChild->getNode());
+            Root->addChild(otherChild);
+            CopyConstractorCopyTree(*otherChild);
+
+        }
+    }
+    return Root->getChildren();
+
+
+}
+
+const Tree &Tree::operator=(const Tree &other) {
+    node=other.getNode();
+    children=other.getChildren();
+    return *this;
+}
+
+const Tree &Tree::operator=(Tree &&other) {
+    node=other.getNode();
+    children=other.getChildren();
+    other.children= nullptr;
+    return *this;
+}
+
+Tree::Tree(Tree &&other) {
+     node=other.node;
+     children=other.children;
+     other.children=nullptr;
+}
+
+
 MaxRankTree * MaxRankTree::Recursion( MaxRankTree *maxSoFar){
 
     if(this->childrenSize()==0)

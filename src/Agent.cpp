@@ -25,6 +25,7 @@ void ContactTracer::act(Session &session) {
     // create tree where the virus is the root
     std::cout<<"Contact tracer create Tree from " <<root<< std::endl;
     Tree *tree= Tree::createTree(session,root);
+
     //find which node to remove
     int remove=tree->traceTree();
 
@@ -37,9 +38,14 @@ void ContactTracer::act(Session &session) {
     else{
         std::cout<<"Contact tracer didnt disconnect anyone" << std::endl;
     }
-
+    if(tree){delete tree;}
 
 }
+
+std::string ContactTracer::MyType() {
+    return "C";
+}
+
 Virus::Virus(int nodeInd):nodeInd(nodeInd) {
 
 }
@@ -85,4 +91,8 @@ void Virus::act(Session &session) {
 
 
 
+}
+
+std::string Virus::MyType() {
+    return "V";
 }

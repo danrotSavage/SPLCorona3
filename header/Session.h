@@ -38,6 +38,12 @@ public:
     int getCurrCycle() const;
     bool isQueueEmpty();
 
+
+    virtual ~Session();//destractor
+    Session(const Session &other);//copy constractor
+   // const Session& operator=(const Session &other);//assingnnment operator
+    const Session& operator=(Session &&other);
+    Session(Session &&other);
 private:
     Graph g;
     TreeType treeType;

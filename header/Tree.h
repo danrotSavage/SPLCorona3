@@ -12,8 +12,18 @@ public:
     void addChild( Tree *child);
     void addChild(const Tree &child);
     static Tree* createTree(const Session& session, int rootLabel);
-    int childrenSize();
+    static vector<Tree*> *CopyConstractorCopyTree(const Tree &other ) ;
+    int childrenSize() const;
+    vector<Tree*>* getChildren() const;
+    int getNode() const;
     virtual int traceTree()=0;
+
+    virtual ~Tree();//destractor
+    Tree(const Tree &other);//copy constractor
+    const Tree& operator=(const Tree &other);//assingnnment operator
+    const Tree& operator=(Tree &&other);
+    Tree(Tree &&other);
+
 private:
     static Tree *  createMaxRankTree(const Session& session, int rootLabel);
     static Tree *  createCycleTree( const Session& session, int rootLabel, int currCycle);
@@ -25,6 +35,8 @@ protected:
     std::vector<Tree*> *children;
 private:
     std::vector<int> getReleventChildren( std::vector<int>& GraphNeighbor, vector<int> &usedVertices);
+
+
 };
 
 class CycleTree: public Tree{
@@ -40,6 +52,7 @@ public:
     MaxRankTree(int rootLabel);
     virtual int traceTree();
     MaxRankTree *Recursion(MaxRankTree *maxSoFar);
+
 };
 
 class RootTree: public Tree{
@@ -47,5 +60,6 @@ public:
     RootTree(int rootLabel);
     virtual int traceTree();
 };
+
 
 #endif

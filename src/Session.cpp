@@ -141,3 +141,54 @@ int Session::getCurrCycle() const {
 bool Session::isQueueEmpty() {
      return (*infected).empty();
  }
+
+Session::~Session() {
+     if(infected){
+         delete infected;
+     }
+     for(auto p:agents)
+     {
+         delete p;
+     }
+}
+
+Session::Session(const Session &other) {
+    g = other.g;
+    treeType = other.treeType;
+    // for (auto elem: other.agents) {
+    //     if (elem->MyType()=="V")
+    //     agents.push_back( new  (*elem) );
+    // }
+}
+
+const Session &Session::operator=(Session &&other) {
+    g=other.g;
+    treeType=other.treeType;
+    infected=other.infected;
+    other.infected=nullptr;
+    for(auto agn: other.agents){
+        Agent * agnPoint;
+        agnPoint=agn;
+        this->agents.push_back(agnPoint);
+        agn= nullptr;
+    }
+    this->currCycle=other.currCycle;
+    return *this;
+}
+
+Session::Session(Session &&other) {
+
+    g=other.g;
+    treeType=other.treeType;
+    infected=other.infected;
+    other.infected=nullptr;
+    for(auto agn: other.agents){
+        Agent * agnPoint;
+        agnPoint=agn;
+        this->agents.push_back(agnPoint);
+        agn= nullptr;
+    }
+    this->currCycle=other.currCycle;
+
+}
+
