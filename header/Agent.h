@@ -8,6 +8,8 @@ class Agent{
 public:
     Agent();
     virtual void act(Session &session)=0;
+    virtual std::string MyType()=0;
+    virtual int MyNumber()=0;
 
 protected:
 
@@ -17,13 +19,16 @@ class ContactTracer: public Agent{
 public:
     ContactTracer();
     virtual void act(Session &session);
+    virtual std::string MyType();
+    virtual int MyNumber();
 };
 
 
 class Virus: public Agent{
 public:
     Virus(int nodeInd);
-
+    virtual std::string MyType();
+    virtual int MyNumber();
     virtual void act(Session &session);
 private:
     const int nodeInd;

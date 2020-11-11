@@ -40,6 +40,15 @@ void ContactTracer::act(Session &session) {
 
 
 }
+
+std::string ContactTracer::MyType() {
+    return "C";
+}
+
+int ContactTracer::MyNumber() {
+    return -1;
+}
+
 Virus::Virus(int nodeInd):nodeInd(nodeInd) {
 
 }
@@ -85,4 +94,12 @@ void Virus::act(Session &session) {
 
 
 
+}
+
+std::string Virus::MyType() {
+    return "V";
+}
+
+int Virus::MyNumber() {
+    return this->nodeInd;
 }

@@ -17,12 +17,14 @@ int main(int argc, char** argv){
      //   return 0;
    // }
 
-    string l="../json/config1.json";
+    string l="/home/spl211/CLionProjects/SPLCorona3/config1.json";
+
+
     Session *m = new Session(l);
+    std::cout << "Hello, World!" << std::endl;
 
 
-
-      m->simulate();
+    m->simulate();
 
 
 

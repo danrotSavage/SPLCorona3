@@ -104,36 +104,30 @@ void Session::simulate() {
 
         indexTurn++;
     }
-  /*       json j;
-    vector <int> infec;
-    for (Agent *a:agents) {
-        if (a->MyType()=="V")
-            infec.push_back(a->MyNumber());
-    }
-    j["agents"]=infec;
-    
-    
+    json j;
     std::vector<std::vector<int>> edges;
     for (int i = 0; i < this->g.getSize(); ++i) {
         vector<int> neighbors = g.getNeighbor(i);
         edges.push_back(neighbors);
     }
     j["graph"]=edges;
+
+
+
+    vector <int> infec;
+    for (Agent *a:agents) {
+        if (a->MyType()=="V")
+            infec.push_back(a->MyNumber());
+    }
+    j["infected"]=infec;
     
+    
+
     
     ofstream i("../json/output.json");
     j>>i;
-*/
-    json j,array;
-    j=this->getGraph().getNeighbor(0);
-    array["graph"].push_back(j);
-    j=this->getGraph().getNeighbor(1);
-    array["graph"].push_back(j);
-    j=this->getGraph().getNeighbor(2);
-    array["graph"].push_back(j);
 
-    ofstream i("output.json");
-    array>>i;
+
 
 
 
