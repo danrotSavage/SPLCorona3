@@ -17,7 +17,7 @@ Tree ::Tree(int rootLabel):node(rootLabel),children(new vector<Tree*>)
 std::vector<int> Tree::getReleventChildren( std::vector<int> &GraphNeighbor, vector<int> &usedVertices)
 {
     std::vector<int> *output=new vector<int>(0);
-    for (int ver = 0; ver < GraphNeighbor.size(); ++ver) {
+    for (size_t ver = 0; ver < (unsigned )GraphNeighbor.size(); ++ver) {
         if(GraphNeighbor[ver]==1 && (usedVertices)[ver]==0)
         {
              output->push_back(ver);
@@ -189,9 +189,8 @@ int Tree::getNode() const {
     return node;
 }
 
-Tree::Tree(const Tree &other) {
-    node=other.getNode();
-    children=CopyConstractorCopyTree(other);
+Tree::Tree(const Tree &other):node(other.getNode()),children(CopyConstractorCopyTree(other)) {
+
 }
 
 
@@ -227,22 +226,21 @@ const Tree &Tree::operator=(Tree &&other) {
     return *this;
 }
 
-Tree::Tree(Tree &&other) {
-     node=other.node;
-     children=other.children;
+Tree::Tree(Tree &&other):node (other.node),children(other.children) {
+
      other.children=nullptr;
 }
 
 
 MaxRankTree * MaxRankTree::Recursion( MaxRankTree *maxSoFar){
 
-    if(this->childrenSize()==0)
+    if((unsigned )(this->childrenSize())==0)
         return maxSoFar;
 
     if(this->childrenSize()>maxSoFar->childrenSize())
         maxSoFar= this;
 
-    for (int i = 0; i < children->size(); ++i) {
+    for (size_t i = 0; i < (unsigned )children->size(); ++i) {
         MaxRankTree *temp = (MaxRankTree*)(*children)[i];
         MaxRankTree *childMax=temp->Recursion(maxSoFar);
         if( (*childMax).childrenSize()>(maxSoFar->childrenSize()) ) //if the Child tree have biger rank tree replace maxSoFar

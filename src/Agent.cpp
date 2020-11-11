@@ -46,6 +46,10 @@ std::string ContactTracer::MyType() {
     return "C";
 }
 
+int ContactTracer::MyNumber() {
+    return -1;
+}
+
 Virus::Virus(int nodeInd):nodeInd(nodeInd) {
 
 }
@@ -73,7 +77,7 @@ void Virus::act(Session &session) {
 
     for(auto elem:neighbors) {
 
-        if (elem == 1 & session.getGraph().isInfected(index)==0 )
+        if ((elem == 1) & (session.getGraph().isInfected(index)==0) )
         {
             std::cout << nodeInd << " has infected "<< index<< std::endl;
             session.getGraph().infectNode(index);
@@ -95,4 +99,8 @@ void Virus::act(Session &session) {
 
 std::string Virus::MyType() {
     return "V";
+}
+
+int Virus::MyNumber() {
+    return this->nodeInd;
 }

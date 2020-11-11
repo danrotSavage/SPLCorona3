@@ -9,6 +9,7 @@ public:
     Agent();
     virtual void act(Session &session)=0;
     virtual std::string MyType()=0;
+    virtual int MyNumber()=0;
 protected:
 
 };
@@ -18,6 +19,7 @@ public:
     ContactTracer();
     virtual void act(Session &session);
     virtual std::string MyType();
+    virtual int MyNumber();
 
 };
 
@@ -28,6 +30,7 @@ public:
 
     virtual void act(Session &session);
     virtual std::string MyType();
+    virtual int MyNumber();
 
 private:
     const int nodeInd;

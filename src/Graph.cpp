@@ -7,7 +7,7 @@ using namespace std;
 Graph::Graph(std::vector<std::vector<int>> matrix):edges(matrix){//matrix on the heap or stack
 
     trafficLight = new vector<int>;
-    for (int i = 0; i < matrix.size(); ++i) {
+    for (size_t i = 0; i < (unsigned )matrix.size(); ++i) {
         trafficLight->push_back(0);
     }
 }
@@ -40,7 +40,7 @@ int Graph::isInfected(int nodeInd) {
 }
 
 void Graph::removeNeighbors(int remove) {
-    for (int i = 0; i < edges.size(); ++i) {
+    for (size_t i = 0; i < (unsigned )edges.size(); ++i) {
         edges[remove][i]=0;
         edges[i][remove]=0;
     }
@@ -70,6 +70,9 @@ std::vector<std::vector<int>> Graph::getEdges() {
 Graph::~Graph() {
     if(trafficLight)
         delete trafficLight;
+    for(vector<int> v:edges)
+        v.clear();
+    edges.clear();
 
 }
 
@@ -97,7 +100,7 @@ Graph::Graph(Graph &&other) {
 Graph::Graph (const Graph &other):edges(other.edges) {
 
     trafficLight = new vector<int>;
-    for (int i = 0; i < other.trafficLight->size(); ++i) {
+    for (size_t i = 0; i < (unsigned )other.trafficLight->size(); ++i) {
         trafficLight->push_back((*(other.trafficLight))[i]);
     }
 }

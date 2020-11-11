@@ -29,7 +29,9 @@ Session:: Session(const std::string &path):g(),infected(new queue<int>) {
         matrix.push_back(elem);
 
     }
-    g= Graph(matrix);
+
+        g = Graph(matrix);
+
 
 
     //get tree type form json
@@ -104,13 +106,8 @@ void Session::simulate() {
 
         indexTurn++;
     }
-   /*      json j;
-    vector <int> infec;
-    for (Agent *a:agents) {
-        if (a->MyType()=="V")
-            infec.push_back(a->MyNumber());
-    }
-    j["agents"]=infec;
+        json j;
+
     
     
     std::vector<std::vector<int>> edges;
@@ -119,11 +116,17 @@ void Session::simulate() {
         edges.push_back(neighbors);
     }
     j["graph"]=edges;
-    
+
+    vector <int> infec;
+    for (Agent *a:agents) {
+        if (a->MyType()=="V")
+            infec.push_back(a->MyNumber());
+    }
+    j["infected"]=infec;
     
     ofstream i("../json/output.json");
     j>>i;
-*/
+
     }
 
 int Session::getGraphSize() const {
@@ -150,15 +153,23 @@ Session::~Session() {
      {
          delete p;
      }
+
 }
 
 Session::Session(const Session &other) {
     g = other.g;
     treeType = other.treeType;
-    // for (auto elem: other.agents) {
-    //     if (elem->MyType()=="V")
-    //     agents.push_back( new  (*elem) );
-    // }
+    for (auto elem: other.agents) {
+         agents.push_back(elem);
+    }
+    for (size_t i = 0; i < (unsigned )other.infected->size(); ++i) {
+        int m=other.infected->front();
+        other.infected->pop();
+        infected->push(m);
+        other.infected->push(m);
+
+    }
+
 }
 
 const Session &Session::operator=(Session &&other) {
@@ -190,5 +201,20 @@ Session::Session(Session &&other) {
     }
     this->currCycle=other.currCycle;
 
+}
+
+const Session &Session::operator=(const Session &other) {
+    g=other.g;
+    treeType=other.treeType;
+    infected=other.infected;
+
+    for(auto agn: other.agents){
+        Agent * agnPoint;
+        agnPoint=agn;
+        this->agents.push_back(agnPoint);
+
+    }
+    this->currCycle=other.currCycle;
+    return *this;
 }
 
