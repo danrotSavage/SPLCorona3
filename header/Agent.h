@@ -10,6 +10,8 @@ public:
     virtual void act(Session &session)=0;
     virtual std::string MyType()=0;
     virtual int MyNumber()=0;
+
+    virtual ~Agent()=default;
 protected:
 
 };

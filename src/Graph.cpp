@@ -4,18 +4,19 @@
 
 using namespace std;
 #include "../header/Graph.h"
-Graph::Graph(std::vector<std::vector<int>> matrix):edges(matrix){//matrix on the heap or stack
+Graph::Graph(std::vector<std::vector<int>> matrix):edges(matrix),trafficLight(new vector<int>){//matrix on the heap or stack
 
-    trafficLight = new vector<int>;
+
     for (size_t i = 0; i < (unsigned )matrix.size(); ++i) {
         trafficLight->push_back(0);
     }
 }
 
-Graph::Graph():edges(std::vector<std::vector<int>>()) {}
+Graph::Graph():edges(std::vector<std::vector<int>>()),trafficLight(new vector<int>) {}
+
 
  std::vector<int> Graph::getNeighbor(int vertices) {
-    vector <int> *b ;
+
 
     return edges[vertices];
 }
@@ -90,16 +91,16 @@ const Graph &Graph::operator=(Graph &&other) {
 
 }
 
-Graph::Graph(Graph &&other) {
-    trafficLight=other.trafficLight;
+Graph::Graph(Graph &&other):edges(other.edges),trafficLight(other.trafficLight){
+
     other.trafficLight= nullptr;
     edges=other.edges;
 
 }
 //copy constructor
-Graph::Graph (const Graph &other):edges(other.edges) {
+Graph::Graph (const Graph &other):edges(other.edges),trafficLight(new vector<int>) {
 
-    trafficLight = new vector<int>;
+
     for (size_t i = 0; i < (unsigned )other.trafficLight->size(); ++i) {
         trafficLight->push_back((*(other.trafficLight))[i]);
     }

@@ -17,12 +17,12 @@ using namespace std;
     return  g;
 
 }
-Session:: Session(const std::string &path):g(),infected(new queue<int>) {
+Session:: Session(const std::string &path):g(),treeType(),agents(),infected(new queue<int>),currCycle(0) {
 
     //get graph from json
     ifstream i("../json/config1.json");
     json j;
-    j<<i;
+    i>>j;
     vector<vector<int>> matrix;
     for( auto elem:j["graph"])
     {
@@ -88,14 +88,11 @@ void Session::simulate() {
     int indexTurn=0;
     for (int i = 0; i < 5; ++i) {
         std::cout<<"             turn "<<i<<" started"<<std::endl;
-        if(i==2){
-            int a=1;
-        }
         std::vector<Agent*> agentsTemp;
         agentsTemp=agents;
         for(auto elem:agentsTemp)
         {
-            // std::cout <<"i am here  " <<i<< std::endl;
+
             elem->act(*this);
 
 
@@ -125,7 +122,7 @@ void Session::simulate() {
     j["infected"]=infec;
     
     ofstream i("../json/output.json");
-    j>>i;
+    i<<j;
 
     }
 
@@ -156,9 +153,8 @@ Session::~Session() {
 
 }
 
-Session::Session(const Session &other) {
-    g = other.g;
-    treeType = other.treeType;
+Session::Session(const Session &other):g(other.g),treeType(other.treeType) ,agents(),infected(),currCycle(other.currCycle){
+
     for (auto elem: other.agents) {
          agents.push_back(elem);
     }
@@ -187,11 +183,11 @@ const Session &Session::operator=(Session &&other) {
     return *this;
 }
 
-Session::Session(Session &&other) {
+Session::Session(Session &&other) :g(other.g),treeType(other.treeType) ,agents(),infected(other.infected),currCycle(other.currCycle){
 
-    g=other.g;
-    treeType=other.treeType;
-    infected=other.infected;
+
+
+
     other.infected=nullptr;
     for(auto agn: other.agents){
         Agent * agnPoint;
@@ -199,7 +195,7 @@ Session::Session(Session &&other) {
         this->agents.push_back(agnPoint);
         agn= nullptr;
     }
-    this->currCycle=other.currCycle;
+
 
 }
 

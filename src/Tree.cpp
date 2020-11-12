@@ -41,6 +41,7 @@ Tree * Tree::createTree(const Session &session, int rootLabel) {
             case Root:
                 return createRootTree(session,rootLabel);
         }
+        return nullptr;
 }
 //check later
 void Tree::addChild( Tree *child) {
