@@ -124,7 +124,7 @@ void Session::simulate() {
     }
     j["infected"]=infec;
     
-    ofstream i("../output.json");
+    ofstream i("./output.json");
     i<<j;
 
     }

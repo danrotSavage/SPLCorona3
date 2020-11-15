@@ -11,20 +11,27 @@ using namespace std;
 
 
 int main(int argc, char** argv){
-    std::cout << "Hello, World!" << std::endl;
-    //if(argc != 2){
-     //   cout << "usage cTrace <config_path>" << endl;
-     //   return 0;
-   // }
+    /*std::cout << "Hello, World!" << std::endl;
+    if(argc != 2){
+        cout << "usage cTrace <config_path>" << endl;
+        return 0;
+    }
 
-    string l="../config1.json";
-    Session *m = new Session(l);
+    //string l=argc[0];
+    Session *m = new Session(argv[1]);
 
 
 
       m->simulate();
     delete m;
-
+*/
+    if(argc != 2){
+        cout << "usage cTrace <config_path>" << endl;
+        return 0;
+    }
+    Session sess(argv[1]);
+    sess.simulate();
+    return 0;
 
 
 
