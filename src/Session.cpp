@@ -93,7 +93,7 @@ void Session::addAgent(const Agent &agent) {
 void Session::simulate() {
 
 
-        while (keepGoing() | currCycle==0) {
+        while (keepGoing() | (currCycle==0)) {
             std::cout << "             turn " << currCycle<< " started" << std::endl;
             std::vector<Agent *> agentsTemp;
             agentsTemp = agents;
@@ -212,14 +212,14 @@ const Session &Session::operator=(const Session &other) {
 bool Session::keepGoing() {
      bool output=false;
      //each node
-    for (int i = 0; i < g.getSize() & !output; ++i) {
+    for (int i = 0; (i < g.getSize()) & !output; ++i) {
         if(g.isInfected(i)==0) {
             //each neighbor
             for (int j = 0; j <g.getSize(); ++j) {
                 vector<int> neighbor = g.getNeighbor(i);
 
 
-                if (neighbor[j]==1 & g.isInfected(j)!=0)
+                if ((neighbor[j]==1) & (g.isInfected(j)!=0))
                 {
                     output=true;
                     break;
