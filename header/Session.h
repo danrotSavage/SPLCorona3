@@ -48,7 +48,7 @@ private:
     Graph g;
     TreeType treeType;
     std::vector<Agent*> agents;
-    std::queue <int> *infected;
+    std::queue <int> infected;
     int currCycle;
 };
 

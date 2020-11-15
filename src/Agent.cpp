@@ -56,7 +56,6 @@ Virus::Virus(int nodeInd):nodeInd(nodeInd) {
 }
 void Virus::act(Session &session) {
 
-    Graph g = session.getGraph();
 
 
     if(session.getGraph().isInfected(nodeInd)==0)//only for the first setup when we read from json

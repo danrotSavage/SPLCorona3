@@ -16,16 +16,17 @@ Tree ::Tree(int rootLabel):node(rootLabel),children(new vector<Tree*>)
 }
 std::vector<int> Tree::getReleventChildren( std::vector<int> &GraphNeighbor, vector<int> &usedVertices)
 {
-    std::vector<int> *output=new vector<int>(0);
+    std::vector<int> output= vector<int>(0);
     for (size_t ver = 0; ver < (unsigned )GraphNeighbor.size(); ++ver) {
         if(GraphNeighbor[ver]==1 && (usedVertices)[ver]==0)
         {
-             output->push_back(ver);
+             output.push_back(ver);
             (usedVertices)[ver]=1;
         }
     }
 
-    return *output;
+
+    return output;
 }
 
 
@@ -98,6 +99,7 @@ Tree *Tree::createMaxRankTree(const Session &session, int rootLabel) {
         }
 
     }
+    delete treeQueue;
     return AbrahamTheRoot;
 }
 Tree *Tree::createCycleTree(const Session &session, int rootLabel , int currCycle) {
@@ -132,6 +134,7 @@ Tree *Tree::createCycleTree(const Session &session, int rootLabel , int currCycl
         }
 
     }
+    delete treeQueue;
     return AbrahamTheRoot;
 }
 Tree *Tree::createRootTree(const Session &session, int rootLabel) {
@@ -165,6 +168,7 @@ Tree *Tree::createRootTree(const Session &session, int rootLabel) {
         }
 
     }
+    delete treeQueue;
     return AbrahamTheRoot;
 }
 
@@ -175,6 +179,7 @@ Tree::~Tree() {
         }
     }
     if(children){
+        children->clear();
         delete children;
     }
 }
@@ -232,7 +237,7 @@ Tree::Tree(Tree &&other):node (other.node),children(other.children) {
      other.children=nullptr;
 }
 
-
+/*
 MaxRankTree * MaxRankTree::Recursion( MaxRankTree *maxSoFar){
 
     if((unsigned )(this->childrenSize())==0)
@@ -244,13 +249,39 @@ MaxRankTree * MaxRankTree::Recursion( MaxRankTree *maxSoFar){
     for (size_t i = 0; i < (unsigned )children->size(); ++i) {
         MaxRankTree *temp = (MaxRankTree*)(*children)[i];
         MaxRankTree *childMax=temp->Recursion(maxSoFar);
-        if( (*childMax).childrenSize()>(maxSoFar->childrenSize()) ) //if the Child tree have biger rank tree replace maxSoFar
+        if( (*childMax).childrenSize()>(maxSoFar->childrenSize()) ) //if the Child tree have bigger rank tree replace maxSoFar
         {
             *maxSoFar=*childMax;
         }
     }
 
     return maxSoFar;
+
+
+}*/
+vector<int>  MaxRankTree::Recursion( vector<int> maxNode){
+
+    if((unsigned )(this->childrenSize())==0)
+        return maxNode;
+
+    if(this->childrenSize()>maxNode[1]){
+        maxNode[0]=this->node;
+        maxNode[1]= this->childrenSize();
+
+    }
+
+
+    for (size_t i = 0; i < (unsigned )children->size(); ++i) {
+        MaxRankTree *temp = (MaxRankTree*)(*children)[i];
+        vector<int>childMax=temp->Recursion(maxNode);
+        if( childMax[1]>maxNode[1] ) //if the Child tree have bigger rank tree replace maxSoFar
+        {
+            maxNode[0]=childMax[0];
+            maxNode[1]=childMax[1];
+        }
+    }
+
+    return maxNode;
 
 
 }
@@ -266,7 +297,10 @@ int CycleTree::traceTree() {
 }
 
 int MaxRankTree::traceTree() {
-    return Recursion(new MaxRankTree(-1)) -> node;
+    vector<int> v{-1,-1};
+    int output=Recursion(v)[0] ;
+
+    return output;
 }
 
 

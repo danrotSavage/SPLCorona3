@@ -12,7 +12,9 @@ Graph::Graph(std::vector<std::vector<int>> matrix):edges(matrix),trafficLight(ne
     }
 }
 
-Graph::Graph():edges(std::vector<std::vector<int>>()),trafficLight(new vector<int>) {}
+Graph::Graph():edges(std::vector<std::vector<int>>()),trafficLight(new vector<int>) {
+
+}
 
 
  std::vector<int> Graph::getNeighbor(int vertices) {
@@ -72,7 +74,7 @@ Graph::~Graph() {
     if(trafficLight)
         delete trafficLight;
     for(vector<int> v:edges)
-        v.clear();
+       v.clear();
     edges.clear();
 
 }

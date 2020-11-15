@@ -17,7 +17,7 @@ using namespace std;
     return  g;
 
 }
-Session:: Session(const std::string &path):g(),treeType(),agents(),infected(new queue<int>),currCycle(0) {
+Session:: Session(const std::string &path):g(),treeType(),agents(),infected(queue<int>()) ,currCycle(0) {
 
     //get graph from json
 
@@ -62,12 +62,12 @@ Session:: Session(const std::string &path):g(),treeType(),agents(),infected(new 
 
 void Session::enqueueInfected(int node) {
 
-    infected->push(node);
+    infected.push(node);
     std::cout<<node <<" entered queue"<< std::endl;
 }
 int Session::dequeueInfected() {
-    int temp= infected->front();
-    infected->pop();
+    int temp= infected.front();
+    infected.pop();
     return temp;
 }
 TreeType Session::getTreeType() const {
@@ -95,15 +95,8 @@ void Session::simulate() {
         agentsTemp=agents;
         for(auto elem:agentsTemp)
         {
-
             elem->act(*this);
-
-
-
         }
-
-
-
         indexTurn++;
     }
         json j;
@@ -142,13 +135,12 @@ int Session::getCurrCycle() const {
 }
 
 bool Session::isQueueEmpty() {
-     return (*infected).empty();
+     return (infected).empty();
  }
 
 Session::~Session() {
-     if(infected){
-         delete infected;
-     }
+     while(!infected.empty())
+        infected.pop();
      for(auto p:agents)
      {
          delete p;
@@ -161,12 +153,8 @@ Session::Session(const Session &other):g(other.g),treeType(other.treeType) ,agen
     for (auto elem: other.agents) {
          agents.push_back(elem);
     }
-    for (size_t i = 0; i < (unsigned )other.infected->size(); ++i) {
-        int m=other.infected->front();
-        other.infected->pop();
-        infected->push(m);
-        other.infected->push(m);
-
+    for (size_t i = 0; i < (unsigned )other.infected.size(); ++i) {
+        infected=other.infected;
     }
 
 }
@@ -175,7 +163,6 @@ const Session &Session::operator=(Session &&other) {
     g=other.g;
     treeType=other.treeType;
     infected=other.infected;
-    other.infected=nullptr;
     for(auto agn: other.agents){
         Agent * agnPoint;
         agnPoint=agn;
@@ -191,7 +178,6 @@ Session::Session(Session &&other) :g(other.g),treeType(other.treeType) ,agents()
 
 
 
-    other.infected=nullptr;
     for(auto agn: other.agents){
         Agent * agnPoint;
         agnPoint=agn;
