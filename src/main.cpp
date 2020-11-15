@@ -17,13 +17,13 @@ int main(int argc, char** argv){
      //   return 0;
    // }
 
-    string l="../json/config1.json";
+    string l="../config1.json";
     Session *m = new Session(l);
 
 
 
       m->simulate();
-
+    delete m;
 
 
 

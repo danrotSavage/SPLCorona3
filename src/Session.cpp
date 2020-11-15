@@ -20,9 +20,12 @@ using namespace std;
 Session:: Session(const std::string &path):g(),treeType(),agents(),infected(new queue<int>),currCycle(0) {
 
     //get graph from json
-    ifstream i("../json/config1.json");
+
+    ifstream i(path);
+
     json j;
     i>>j;
+    std::cout<<"hello,guy"<<std::endl;
     vector<vector<int>> matrix;
     for( auto elem:j["graph"])
     {
@@ -121,7 +124,7 @@ void Session::simulate() {
     }
     j["infected"]=infec;
     
-    ofstream i("../json/output.json");
+    ofstream i("../output.json");
     i<<j;
 
     }

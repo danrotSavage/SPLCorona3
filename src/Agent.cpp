@@ -38,7 +38,8 @@ void ContactTracer::act(Session &session) {
     else{
         std::cout<<"Contact tracer didnt disconnect anyone" << std::endl;
     }
-    if(tree){delete tree;}
+    if(tree){
+        delete tree;}
 
 }
 
