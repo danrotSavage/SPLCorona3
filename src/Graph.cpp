@@ -80,14 +80,19 @@ Graph::~Graph() {
 }
 
 const Graph &Graph::operator=(const Graph &other) {
+
     *trafficLight = (*(other.trafficLight));
     edges=other.edges;
     return *this;
 }
 
 const Graph &Graph::operator=(Graph &&other) {
+    if (trafficLight)
+        delete trafficLight;
      trafficLight=other.trafficLight;
     other.trafficLight=nullptr;
+
+
     edges=other.edges;
     return *this;
 

@@ -45,6 +45,8 @@ public:
     const Session& operator=(Session &&other);
     Session(Session &&other);
 private:
+
+    bool keepGoing ();
     Graph g;
     TreeType treeType;
     std::vector<Agent*> agents;

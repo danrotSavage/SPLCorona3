@@ -288,9 +288,11 @@ vector<int>  MaxRankTree::Recursion( vector<int> maxNode){
 
 int CycleTree::traceTree() {
     CycleTree *output=this;
-    for (int i = 1; i < currCycle; ++i) {
-        CycleTree *temp=(CycleTree*)((*children)[0]);
-        output=temp;
+    for (int i = 0; i < currCycle; ++i) {
+        if (output->childrenSize()>0) {
+            CycleTree *temp = (CycleTree *) ((*(output->children))[0]);
+            output = temp;
+        }
     }
     return output->node;
 

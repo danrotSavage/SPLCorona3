@@ -24,14 +24,17 @@ Session:: Session(const std::string &path):g(),treeType(),agents(),infected(queu
     ifstream i(path);
 
     json j;
-    i>>j;
-    std::cout<<"hello,guy"<<std::endl;
+    //i>>j;
+   operator >>(i,j);
     vector<vector<int>> matrix;
     for( auto elem:j["graph"])
     {
         matrix.push_back(elem);
 
     }
+
+
+
 
         g = Graph(matrix);
 
@@ -88,20 +91,22 @@ void Session::addAgent(const Agent &agent) {
 }
 
 void Session::simulate() {
-    int indexTurn=0;
-    for (int i = 0; i < 5; ++i) {
-        std::cout<<"             turn "<<i<<" started"<<std::endl;
-        std::vector<Agent*> agentsTemp;
-        agentsTemp=agents;
-        for(auto elem:agentsTemp)
-        {
-            elem->act(*this);
+
+
+        while (keepGoing() | currCycle==0) {
+            std::cout << "             turn " << currCycle<< " started" << std::endl;
+            std::vector<Agent *> agentsTemp;
+            agentsTemp = agents;
+            for (auto elem:agentsTemp) {
+                elem->act(*this);
+            }
+            currCycle++;
+
         }
-        indexTurn++;
-    }
+
         json j;
 
-    
+
     
     std::vector<std::vector<int>> edges;
     for (int i = 0; i < this->g.getSize(); ++i) {
@@ -201,5 +206,31 @@ const Session &Session::operator=(const Session &other) {
     }
     this->currCycle=other.currCycle;
     return *this;
+}
+
+//go over each node, check if he has neighbors that are infected.
+bool Session::keepGoing() {
+     bool output=false;
+     //each node
+    for (int i = 0; i < g.getSize() & !output; ++i) {
+        if(g.isInfected(i)==0) {
+            //each neighbor
+            for (int j = 0; j <g.getSize(); ++j) {
+                vector<int> neighbor = g.getNeighbor(i);
+
+
+                if (neighbor[j]==1 & g.isInfected(j)!=0)
+                {
+                    output=true;
+                    break;
+                }
+
+            }
+
+
+
+        }
+    }
+    return output;
 }
 
