@@ -3,9 +3,9 @@
 //
 
 #include <iostream>
-#include "../header/Agent.h"
-#include "../header/Session.h"
-#include "../header/Tree.h"
+#include "../include/Agent.h"
+#include "../include/Session.h"
+#include "../include/Tree.h"
 using namespace std;
 Agent::Agent() {
 
@@ -53,13 +53,13 @@ void Virus::act(Session &session) {
 
 
 
-    if(session.getGraph().isInfected(nodeInd)==0)//only for the first setup when we read from json
+    if(session.getGraph().isInfectedNode(nodeInd) == 0)//only for the first setup when we read from json
     {
         session.getGraph().infectNode(nodeInd);
 
     }
 
-    if(session.getGraph().isInfected(nodeInd)==1)//each virus must be infected, make sure 1 in traffic light become 2
+    if(session.getGraph().isInfectedNode(nodeInd) == 1)//each virus must be infected, make sure 1 in traffic light become 2
     {
         session.getGraph().infectNode(nodeInd);
         session.enqueueInfected(nodeInd);
@@ -70,7 +70,7 @@ void Virus::act(Session &session) {
 
     for(auto elem:neighbors) {
 
-        if ((elem == 1) & (session.getGraph().isInfected(index)==0) )
+        if ((elem == 1) & (session.getGraph().isInfectedNode(index) == 0) )
         {
             session.getGraph().infectNode(index);
             Virus *copy = new Virus(index);

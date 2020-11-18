@@ -17,12 +17,6 @@ class Session{
 public:
     //constructor
     Session(const std::string& path);
-
-
-    //destructor
-   // virtual ~Session();
-
-
     void simulate();
     void addAgent( Agent* agent);
     void addAgent(const Agent& agent);

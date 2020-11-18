@@ -20,8 +20,8 @@ class ContactTracer: public Agent{
 public:
     ContactTracer();
     virtual void act(Session &session);
-    virtual std::string MyType();
-    virtual int MyNumber();
+    virtual std::string MyType();//return "c"
+    virtual int MyNumber();//return -1
 
 };
 
@@ -31,7 +31,7 @@ public:
     Virus(int nodeInd);
 
     virtual void act(Session &session);
-    virtual std::string MyType();
+    virtual std::string MyType();//return "V"
     virtual int MyNumber();
 
 private:

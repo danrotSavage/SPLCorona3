@@ -3,10 +3,10 @@
 //
 
 #include <iostream>
-#include "../header/Tree.h"
+#include "../include/Tree.h"
 #include "queue"
-#include "../header/Graph.h"
-#include "../header/Session.h"
+#include "../include/Graph.h"
+#include "../include/Session.h"
 
 using namespace std;
 

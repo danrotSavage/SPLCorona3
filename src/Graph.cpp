@@ -3,33 +3,27 @@
 //
 
 using namespace std;
-#include "../header/Graph.h"
+#include "../include/Graph.h"
+
 Graph::Graph(std::vector<std::vector<int>> matrix):edges(matrix),trafficLight(new vector<int>){//matrix on the heap or stack
-
-
     for (size_t i = 0; i < (unsigned )matrix.size(); ++i) {
         trafficLight->push_back(0);
     }
 }
 
-Graph::Graph():edges(std::vector<std::vector<int>>()),trafficLight(new vector<int>) {
-
-}
+Graph::Graph():edges(std::vector<std::vector<int>>()),trafficLight(new vector<int>) {}
 
 
  std::vector<int> Graph::getNeighbor(int vertices) {
-
-
     return edges[vertices];
 }
 int Graph::getSize() const {
-
     return edges.size();
 }
 
 
 
-void Graph::infectNode(int nodeInd) {
+void Graph::infectNode(int nodeInd) {//change healthy node to sick, sick node to infected
     if ((*trafficLight)[nodeInd] == 0)
         (*trafficLight)[nodeInd] = 1;
     else if((*trafficLight)[nodeInd]==1)
@@ -37,7 +31,7 @@ void Graph::infectNode(int nodeInd) {
 
 }
 
-int Graph::isInfected(int nodeInd) {
+int Graph::isInfectedNode(int nodeInd) {
 
     return (*trafficLight)[nodeInd];
 }
@@ -98,6 +92,10 @@ Graph::Graph (const Graph &other):edges(other.edges),trafficLight(new vector<int
     for (size_t i = 0; i < (unsigned )other.trafficLight->size(); ++i) {
         trafficLight->push_back((*(other.trafficLight))[i]);
     }
+}
+
+bool Graph::isInfected(int nodeInd) {
+    return (*trafficLight)[nodeInd]==2;
 }
 
 

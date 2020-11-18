@@ -1,12 +1,12 @@
 //
 // Created by spl211 on 06/11/2020.
 //
-#include "../header/Session.h"
+#include "../include/Session.h"
 #include <iostream>
 #include "fstream"
-#include "../json/json.hpp"
+#include "../include/json.hpp"
 #include "queue"
-#include "../header/Agent.h"
+#include "../include/Agent.h"
 
 
 using json  = nlohmann::json;
@@ -74,11 +74,10 @@ void Session::addAgent( Agent *agent) {
 
 }
 void Session::setGraph(const Graph &graph) {
-
     g=graph;
 }
 void Session::addAgent(const Agent &agent) {
-    return;
+    agents.push_back((Agent *const) &agent);
 }
 
 void Session::simulate() {
@@ -202,19 +201,19 @@ bool Session::keepGoing() {
      bool output=false;
      //each node
     for (int i = 0; (i < g.getSize()) & !output; ++i) {
-        if (g.isInfected(i)==1)
+        if (g.isInfectedNode(i) == 1)
         {
             output=true;
             break;
         }
 
-        if(g.isInfected(i)==0) {
+        if(g.isInfectedNode(i) == 0) {
             //each neighbor
             for (int j = 0; j <g.getSize(); ++j) {
                 vector<int> neighbor = g.getNeighbor(i);
 
 
-                if ((neighbor[j]==1) & (g.isInfected(j)!=0))
+                if ((neighbor[j]==1) & (g.isInfectedNode(j) != 0))
                 {
                     output=true;
                     break;

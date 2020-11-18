@@ -8,7 +8,8 @@ public:
     Graph(std::vector<std::vector<int>> matrix);
     Graph();
     void infectNode(int nodeInd);
-    int isInfected(int nodeInd);
+     int isInfectedNode(int nodeInd);
+    bool isInfected (int nodeInd);
     void removeNeighbors(int remove);
      std::vector<int> getNeighbor(int vertices) ;
      int getSize() const;

@@ -1,10 +1,10 @@
 #include <iostream>
 #include "fstream"
-#include "../json/json.hpp"
-#include "../header/Tree.h"
-#include "../header/Graph.h"
-#include "../header/Session.h"
-#include "../header/Agent.h"
+#include "../include/json.hpp"
+#include "../include/Tree.h"
+#include "../include/Graph.h"
+#include "../include/Session.h"
+#include "../include/Agent.h"
 
 using json  = nlohmann::json;
 using namespace std;
