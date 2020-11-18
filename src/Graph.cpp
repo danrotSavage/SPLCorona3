@@ -54,20 +54,7 @@ std::vector<std::vector<int>> Graph::getEdges() {
 }
 
 
-//copy constructor
 
-/*
-    for (int i = 0; i < other.edges.size(); ++i) {
-        vector<int> m;
-        for (int j = 0; j < other.edges[i].size(); ++j) {
-
-            m.push_back(other.edges[i][j]);
-
-        }
-        edges.push_back(m);
-    }
-
-    */
 
 
 Graph::~Graph() {

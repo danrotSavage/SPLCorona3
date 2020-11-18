@@ -10,10 +10,9 @@
 
 using namespace std;
 
-Tree ::Tree(int rootLabel):node(rootLabel),children(new vector<Tree*>)
-{
+Tree ::Tree(int rootLabel):node(rootLabel),children( vector<Tree*>()){}
 
-}
+
 std::vector<int> Tree::getReleventChildren( std::vector<int> &GraphNeighbor, vector<int> &usedVertices)
 {
     std::vector<int> output= vector<int>(0);
@@ -24,8 +23,6 @@ std::vector<int> Tree::getReleventChildren( std::vector<int> &GraphNeighbor, vec
             (usedVertices)[ver]=1;
         }
     }
-
-
     return output;
 }
 
@@ -44,16 +41,14 @@ Tree * Tree::createTree(const Session &session, int rootLabel) {
         }
         return nullptr;
 }
+
 //check later
 void Tree::addChild( Tree *child) {
-
-
-    (children)->push_back(child);
+    children.push_back(child);
 }
 
 void Tree::addChild(const Tree &child) {
-
-     std::cout <<" oh hell no " << std::endl;
+    children.push_back((Tree *const) &child);
 }
 
 CycleTree::CycleTree(int rootLabel, int currCycle):Tree(rootLabel),currCycle(currCycle) {}
@@ -64,7 +59,7 @@ int RootTree::traceTree() {
     return this->node;
 }
 int Tree::childrenSize() const{
-    return children->size();
+    return children.size();
 }
 
 Tree *Tree::createMaxRankTree(const Session &session, int rootLabel) {
@@ -164,7 +159,7 @@ Tree *Tree::createRootTree(const Session &session, int rootLabel) {
             RootTree *tempTree = new RootTree(child);
             treeQueue->push(tempTree);
             tempRoot->addChild(tempTree);
-            //childrenInt.push_back(tempTree->node);
+
         }
 
     }
@@ -174,17 +169,19 @@ Tree *Tree::createRootTree(const Session &session, int rootLabel) {
 
 Tree::~Tree() {
     for (int i = 0; i < childrenSize(); ++i) {
-        if((*children)[i]){
-            delete (*children)[i];
+        if(!children.empty())
+        {
+            delete children[i];
+
         }
     }
-    if(children){
-        children->clear();
-        delete children;
+        children.clear();
     }
-}
 
-vector<Tree*> *Tree::getChildren() const {
+
+
+
+vector<Tree*> Tree::getChildren() const {
     return this->children;
 
 
@@ -195,26 +192,23 @@ int Tree::getNode() const {
     return node;
 }
 
-Tree::Tree(const Tree &other):node(other.getNode()),children(CopyConstractorCopyTree(other)) {
-
-}
+Tree::Tree(const Tree &other):node(other.getNode()),children(CopyConstractorCopyTree(other)) {}
 
 
 
-vector<Tree*> * Tree::CopyConstractorCopyTree(const Tree &other ) {
-    Tree *Root=new MaxRankTree(other.getNode());
+vector<Tree*>  Tree::CopyConstractorCopyTree(const Tree &other ) {
+    int root = other.getNode();
+    Tree *pRootTree=new RootTree(root);
+
     if(other.childrenSize()!=0){
-
-
         for (int i = 0; i < other.childrenSize(); ++i) {
-            Tree *thisChild = (Tree *) ( (*other.getChildren())[i]);
-            Tree *otherChild=new MaxRankTree(thisChild->getNode());
-            Root->addChild(otherChild);
+            Tree *otherChild=new RootTree((other.getChildren()[i])->getNode());
+            pRootTree->addChild(otherChild);
             CopyConstractorCopyTree(*otherChild);
 
         }
     }
-    return Root->getChildren();
+    return pRootTree->getChildren();
 
 
 }
@@ -222,43 +216,26 @@ vector<Tree*> * Tree::CopyConstractorCopyTree(const Tree &other ) {
 const Tree &Tree::operator=(const Tree &other) {
     node=other.getNode();
     children=other.getChildren();
+
     return *this;
 }
 
 const Tree &Tree::operator=(Tree &&other) {
     node=other.getNode();
     children=other.getChildren();
-    other.children= nullptr;
+
     return *this;
 }
 
 Tree::Tree(Tree &&other):node (other.node),children(other.children) {
 
-     other.children=nullptr;
 }
 
-/*
-MaxRankTree * MaxRankTree::Recursion( MaxRankTree *maxSoFar){
-
-    if((unsigned )(this->childrenSize())==0)
-        return maxSoFar;
-
-    if(this->childrenSize()>maxSoFar->childrenSize())
-        maxSoFar= this;
-
-    for (size_t i = 0; i < (unsigned )children->size(); ++i) {
-        MaxRankTree *temp = (MaxRankTree*)(*children)[i];
-        MaxRankTree *childMax=temp->Recursion(maxSoFar);
-        if( (*childMax).childrenSize()>(maxSoFar->childrenSize()) ) //if the Child tree have bigger rank tree replace maxSoFar
-        {
-            *maxSoFar=*childMax;
-        }
-    }
-
-    return maxSoFar;
+int Tree::getRootLabel() {
+    return node;
+}
 
 
-}*/
 vector<int>  MaxRankTree::Recursion( vector<int> maxNode){
 
     if((unsigned )(this->childrenSize())==0)
@@ -271,8 +248,8 @@ vector<int>  MaxRankTree::Recursion( vector<int> maxNode){
     }
 
 
-    for (size_t i = 0; i < (unsigned )children->size(); ++i) {
-        MaxRankTree *temp = (MaxRankTree*)(*children)[i];
+    for (size_t i = 0; i < (unsigned )children.size(); ++i) {
+        MaxRankTree *temp = (MaxRankTree*)(children)[i];
         vector<int>childMax=temp->Recursion(maxNode);
         if( childMax[1]>maxNode[1] ) //if the Child tree have bigger rank tree replace maxSoFar
         {
@@ -290,7 +267,7 @@ int CycleTree::traceTree() {
     CycleTree *output=this;
     for (int i = 0; i < currCycle; ++i) {
         if (output->childrenSize()>0) {
-            CycleTree *temp = (CycleTree *) ((*(output->children))[0]);
+            CycleTree *temp = (CycleTree *) (((output->children))[0]);
             output = temp;
         }
     }

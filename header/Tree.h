@@ -12,11 +12,13 @@ public:
     void addChild( Tree *child);
     void addChild(const Tree &child);
     static Tree* createTree(const Session& session, int rootLabel);
-    static vector<Tree*> *CopyConstractorCopyTree(const Tree &other ) ;
+    static vector<Tree*> CopyConstractorCopyTree(const Tree &other ) ;
     int childrenSize() const;
-    vector<Tree*>* getChildren() const;
+    vector<Tree*> getChildren() const;
     int getNode() const;
     virtual int traceTree()=0;
+    int getRootLabel();
+
 
     virtual ~Tree();//destractor
     Tree(const Tree &other);//copy constractor
@@ -32,7 +34,7 @@ private:
 
 protected:
     int node;
-    std::vector<Tree*> *children;
+    std::vector<Tree*> children;
 private:
     std::vector<int> getReleventChildren( std::vector<int>& GraphNeighbor, vector<int> &usedVertices);
 

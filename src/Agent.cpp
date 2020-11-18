@@ -23,7 +23,6 @@ void ContactTracer::act(Session &session) {
     }
     int root = session.dequeueInfected();
     // create tree where the virus is the root
-    std::cout<<"Contact tracer create Tree from " <<root<< std::endl;
     Tree *tree= Tree::createTree(session,root);
 
     //find which node to remove
@@ -32,11 +31,7 @@ void ContactTracer::act(Session &session) {
 
     if(remove!=-1) {
         //remove
-        std::cout<<"Contact tracer disconnect " <<remove<< std::endl;
         session.getGraph().removeNeighbors(remove);
-    }
-    else{
-        std::cout<<"Contact tracer didnt disconnect anyone" << std::endl;
     }
     if(tree){
         delete tree;}
@@ -67,9 +62,7 @@ void Virus::act(Session &session) {
     if(session.getGraph().isInfected(nodeInd)==1)//each virus must be infected, make sure 1 in traffic light become 2
     {
         session.getGraph().infectNode(nodeInd);
-        std::cout<<nodeInd<<" got sick" <<std::endl;
         session.enqueueInfected(nodeInd);
-
     }
 
     vector <int> neighbors = session.getGraph().getNeighbor(nodeInd);
@@ -79,18 +72,12 @@ void Virus::act(Session &session) {
 
         if ((elem == 1) & (session.getGraph().isInfected(index)==0) )
         {
-            std::cout << nodeInd << " has infected "<< index<< std::endl;
             session.getGraph().infectNode(index);
             Virus *copy = new Virus(index);
             session.addAgent(copy);
-
             return;
-
         }
             index++;
-
-
-
     }
 
 

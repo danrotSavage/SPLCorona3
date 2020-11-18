@@ -13,31 +13,21 @@ using json  = nlohmann::json;
 using namespace std;
 
  Graph& Session::getGraph()   {
-
     return  g;
-
 }
 Session:: Session(const std::string &path):g(),treeType(),agents(),infected(queue<int>()) ,currCycle(0) {
 
     //get graph from json
-
     ifstream i(path);
 
     json j;
-    //i>>j;
    operator >>(i,j);
     vector<vector<int>> matrix;
     for( auto elem:j["graph"])
     {
         matrix.push_back(elem);
-
     }
-
-
-
-
         g = Graph(matrix);
-
 
 
     //get tree type form json
@@ -52,10 +42,11 @@ Session:: Session(const std::string &path):g(),treeType(),agents(),infected(queu
          std::cout <<" exception, wrong tree type " << std::endl;
 
     //get agent from json
-    for(auto elem: j["agents"])
-    {
-            if (elem[0]=="V")
+    for(auto elem: j["agents"]) {
+        if (elem[0] == "V"){
             agents.push_back(new Virus(elem[1]));
+            g.infectNode(elem[1]);
+        }
             else
                 agents.push_back(new ContactTracer());
     }
@@ -66,7 +57,7 @@ Session:: Session(const std::string &path):g(),treeType(),agents(),infected(queu
 void Session::enqueueInfected(int node) {
 
     infected.push(node);
-    std::cout<<node <<" entered queue"<< std::endl;
+
 }
 int Session::dequeueInfected() {
     int temp= infected.front();
@@ -94,7 +85,6 @@ void Session::simulate() {
 
 
         while (keepGoing() | (currCycle==0)) {
-            std::cout << "             turn " << currCycle<< " started" << std::endl;
             std::vector<Agent *> agentsTemp;
             agentsTemp = agents;
             for (auto elem:agentsTemp) {
@@ -103,7 +93,6 @@ void Session::simulate() {
             currCycle++;
 
         }
-
         json j;
 
 
@@ -213,6 +202,12 @@ bool Session::keepGoing() {
      bool output=false;
      //each node
     for (int i = 0; (i < g.getSize()) & !output; ++i) {
+        if (g.isInfected(i)==1)
+        {
+            output=true;
+            break;
+        }
+
         if(g.isInfected(i)==0) {
             //each neighbor
             for (int j = 0; j <g.getSize(); ++j) {
@@ -224,11 +219,7 @@ bool Session::keepGoing() {
                     output=true;
                     break;
                 }
-
             }
-
-
-
         }
     }
     return output;
